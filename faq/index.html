@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>claude-sonnet-5 API 常见问题（2026）</title>
+<meta name="description" content="claude-sonnet-5 接入过程中最常被问到的问题与答案。">
+<meta name="keywords" content="Claude Sonnet 5 API 中转站,Claude Sonnet 5 API,claude-sonnet-5,Claude API 中转,Anthropic API,Claude 模型价格,大模型 API,模型中转站">
+<link rel="canonical" href="https://a37836323.github.io/claude-sonnet-5-api/faq/">
+<link rel="alternate" hreflang="zh-CN" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<link rel="alternate" hreflang="en-US" href="https://claude-sonnet-5-api-en.pages.dev/">
+<link rel="alternate" hreflang="x-default" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="claude-sonnet-5 API 常见问题（2026）">
+<meta property="og:description" content="claude-sonnet-5 接入过程中最常被问到的问题与答案。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="claude-sonnet-5 API 常见问题（2026）">
+<meta name="twitter:description" content="claude-sonnet-5 接入过程中最常被问到的问题与答案。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#website",
+      "url": "https://a37836323.github.io/claude-sonnet-5-api",
+      "name": "Claude Sonnet 5 API 中转站 2026：价格、接入与模型参数",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/faq/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Claude Sonnet 5 API 中转站",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "claude-sonnet-5 API 常见问题",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/faq/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Claude Sonnet 5 API 中转站使用哪个模型名？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "模型名是 claude-sonnet-5。请求体中的具体字段结构、消息格式和可用参数应以中转平台文档为准。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "claude-sonnet-5 的价格是多少？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "claude-sonnet-5 的基准输入价为 $2、基准输出价为 $10，单位均为每 100 万 token。缓存命中基准价为 $0.2 / 100 万 token，最终价格需乘以用户所在分组倍率。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "为什么账单价格可能与页面基准价不同？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "因为最终价格等于基准价乘以用户所在分组的倍率。调用前应在面板确认账户分组，账单核对时还应区分输入、输出和缓存命中用量。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Claude Sonnet 5 的上下文窗口是多少？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "已提供的模型说明标注其默认且最大上下文窗口为 100 万 token。该说明同时标注最大输出 token 限制为 128k，实际请求仍应以接口返回和平台限制为准。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "通过中转调用 Claude Sonnet 5 有哪些局限？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "中转调用会增加一跳链路，延迟、故障排查和接口行为需要在实际环境中验证。官方新功能、新参数或新模型在中转侧可能有接入延迟，支持范围也可能不同。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "面板只支持页面列出的模型吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "不是。面板数据在拉取时显示有 452 个在售模型，而已提供的价格清单只列出调用量较高的 150 个模型，另有 302 个模型未在该清单中列出。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Claude Sonnet 5 的发布时间是什么时候？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Claude Sonnet 5 的具体发布时间待实测。当前可确认的是，2026-08-04T16:16:08Z 拉取的面板定价数据中已列出 claude-sonnet-5。"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "offers": {
+        "@type": "Offer",
+        "price": "输入 $2 / 100 万 token；输出 $10 / 100 万 token（基准价）",
+        "priceCurrency": "USD",
+        "url": "https://api.openlux.ai",
+        "description": "最终计费金额 = 基准价 × 用户所在分组倍率；缓存命中基准价为 $0.2 / 100 万 token。"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/faq/#article",
+      "headline": "claude-sonnet-5 API 常见问题",
+      "datePublished": "2026-08-04",
+      "dateModified": "2026-08-05",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/claude-sonnet-5-api/faq/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fefdfb;color:#1c1917;font-family:"Helvetica Neue",Helvetica,"PingFang SC","Source Han Sans SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.head-col11{max-width:900px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #d9f99d}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#65a30d;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f7fee7;padding:.15em .4em;border-radius:6px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f7fee7;border:1px solid #d9f99d;border-radius:10px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #d9f99d;padding:10px 12px;text-align:left}
+th{background:#f7fee7;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:disc}
+li{margin:.4em 0}
+.pane-stack58{background:#f7fee7;border-left:3px solid #65a30d;
+border-radius:0 10px 10px 0;padding:14px 18px;margin:1.4em 0}
+.shell-frame94{display:inline-block;background:#65a30d;color:#fff;
+padding:12px 26px;border-radius:10px;font-weight:600;margin:.6em 0}
+.shell-frame94:hover{opacity:.88;text-decoration:none}
+.body-grid55{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #d9f99d}
+.wrap-pane27{border:1px solid #d9f99d;border-radius:10px;
+padding:2px 18px;margin:.8em 0}
+.unit-note59{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .head-col11{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="head-col11">
+<p class="head-deck31"><a href="https://a37836323.github.io/claude-sonnet-5-api/">首页</a> ／ claude-sonnet-5</p>
+<h1>claude-sonnet-5 API 常见问题</h1>
+<div>
+<h2>常见问题</h2>
+<div class="wrap-pane27"><h3>Claude Sonnet 5 API 中转站使用哪个模型名？</h3><p>模型名是 claude-sonnet-5。请求体中的具体字段结构、消息格式和可用参数应以中转平台文档为准。</p></div>
+<div class="wrap-pane27"><h3>claude-sonnet-5 的价格是多少？</h3><p>claude-sonnet-5 的基准输入价为 $2、基准输出价为 $10，单位均为每 100 万 token。缓存命中基准价为 $0.2 / 100 万 token，最终价格需乘以用户所在分组倍率。</p></div>
+<div class="wrap-pane27"><h3>为什么账单价格可能与页面基准价不同？</h3><p>因为最终价格等于基准价乘以用户所在分组的倍率。调用前应在面板确认账户分组，账单核对时还应区分输入、输出和缓存命中用量。</p></div>
+<div class="wrap-pane27"><h3>Claude Sonnet 5 的上下文窗口是多少？</h3><p>已提供的模型说明标注其默认且最大上下文窗口为 100 万 token。该说明同时标注最大输出 token 限制为 128k，实际请求仍应以接口返回和平台限制为准。</p></div>
+<div class="wrap-pane27"><h3>通过中转调用 Claude Sonnet 5 有哪些局限？</h3><p>中转调用会增加一跳链路，延迟、故障排查和接口行为需要在实际环境中验证。官方新功能、新参数或新模型在中转侧可能有接入延迟，支持范围也可能不同。</p></div>
+<div class="wrap-pane27"><h3>面板只支持页面列出的模型吗？</h3><p>不是。面板数据在拉取时显示有 452 个在售模型，而已提供的价格清单只列出调用量较高的 150 个模型，另有 302 个模型未在该清单中列出。</p></div>
+<div class="wrap-pane27"><h3>Claude Sonnet 5 的发布时间是什么时候？</h3><p>Claude Sonnet 5 的具体发布时间待实测。当前可确认的是，2026-08-04T16:16:08Z 拉取的面板定价数据中已列出 claude-sonnet-5。</p></div>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://api.openlux.ai/register?channel=c_lkv0gzwj" rel="nofollow noopener" data-cta="link">点此进入</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="wrap-item70">
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/quickstart/">claude-sonnet-5 API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/compare/">claude-sonnet-5 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>先在面板确认 claude-sonnet-5 分组与凭据，再用最小请求完成接入验证</p>
+<p><a class="shell-frame94" href="https://api.openlux.ai/register?channel=c_lkv0gzwj" rel="nofollow noopener" data-cta="button">注册账号，领取测试额度</a></p>
+<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_lkv0gzwj" rel="nofollow noopener" data-cta="link">https://api.openlux.ai</a></p>
+</div>
+<p class="body-grid55">最后更新：2026年08月05日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='claude-sonnet-5-api',L='zh-CN',V=1;
+    // 会话内唯一，仅存在于内存：刷新即变，不落 cookie 也不落 storage
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          // 老浏览器兜底。keepalive 让请求在页面卸载后仍能发完
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    // 预渲染的页面不算一次真实访问，等真正可见了再报
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    // 出站点击：只记去向和位置，不记任何个人信息
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
