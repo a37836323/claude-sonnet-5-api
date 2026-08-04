@@ -233,6 +233,14 @@ with request.urlopen(req, timeout=60) as response:
 <ul class="pane-block10">
 <li><a href="https://a37836323.github.io/claude-sonnet-5-api/compare/">claude-sonnet-5 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
 <li><a href="https://a37836323.github.io/claude-sonnet-5-api/faq/">claude-sonnet-5 API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-buy/">2026 年 Claude Sonnet 5 API 怎么买：下单前要确认的渠道与结算信息</a><span>Claude Sonnet 5 购买指南</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-payments/">没有信用卡，Claude Sonnet 5 API 付款方式怎么确认</a><span>确认 Claude Sonnet 5 付款方式</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/api-relay-explained/">API 中转站到底做了什么，什么时候值得多走这一跳</a><span>了解 API 中转站原理</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-code-relay-setup/">Claude Code 接入 claude-sonnet-5：先确认配置能力，再写中转参数</a><span>Claude Code 中转配置核对</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/">2026 年 claude-sonnet-5 API 成本怎么和其他模型比较</a><span>Sonnet 5 成本对比</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-api-ban-risk/">claude-sonnet-5 走中转会被封吗，风险该怎么核实</a><span>封号与数据风险判断</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-free-trial/">claude-sonnet-5 API 能免费试用吗：先确认额度，再安排验证</a><span>免费额度与试用边界</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/organization-disabled-error-fix/">Cline 提示 this organization has been disabled 时，先判断是不是账号侧故障</a><span>组织禁用报错排查</span></li>
 </ul>
 </div>
 <div>
@@ -247,7 +255,6 @@ with request.urlopen(req, timeout=60) as response:
 (function(){
   try{
     var EP='https://tk.openlux.ai/collect',S='claude-sonnet-5-api',L='zh-CN',V=1;
-    // 会话内唯一，仅存在于内存：刷新即变，不落 cookie 也不落 storage
     var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
     function send(type,extra){
       try{
@@ -262,12 +269,10 @@ with request.urlopen(req, timeout=60) as response:
         if(navigator.sendBeacon){
           navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
         }else{
-          // 老浏览器兜底。keepalive 让请求在页面卸载后仍能发完
           fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
         }
       }catch(e){}
     }
-    // 预渲染的页面不算一次真实访问，等真正可见了再报
     if(document.visibilityState==='prerender'){
       document.addEventListener('visibilitychange',function h(){
         if(document.visibilityState!=='prerender'){
@@ -277,7 +282,6 @@ with request.urlopen(req, timeout=60) as response:
     }else{
       send('view');
     }
-    // 出站点击：只记去向和位置，不记任何个人信息
     document.addEventListener('click',function(e){
       var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
       if(!a)return;
