@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>claude-sonnet-5 API 怎么买更省：2026 成本对比</title>
+<meta name="description" content="claude-sonnet-5 并非所有用量下都比 OpenAI 便宜。按 default 分组，输入与部分模型接近，输出成本取决于候选模型和输入输出比例。本文用面板定价数据计算月成本，并说明缓存、选型与批量处理的省钱边界。">
+<meta name="keywords" content="Claude Sonnet 5 API 中转站,Claude Sonnet 5 API,claude-sonnet-5,Claude API 中转,Anthropic API,Claude 模型价格,大模型 API,模型中转站">
+<link rel="canonical" href="https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/">
+<link rel="alternate" hreflang="zh-CN" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<link rel="alternate" hreflang="en-US" href="https://claude-sonnet-5-api-en.pages.dev/">
+<link rel="alternate" hreflang="x-default" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="claude-sonnet-5 API 怎么买更省：2026 成本对比">
+<meta property="og:description" content="claude-sonnet-5 并非所有用量下都比 OpenAI 便宜。按 default 分组，输入与部分模型接近，输出成本取决于候选模型和输入输出比例。本文用面板定价数据计算月成本，并说明缓存、选型与批量处理的省钱边界。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="claude-sonnet-5 API 怎么买更省：2026 成本对比">
+<meta name="twitter:description" content="claude-sonnet-5 并非所有用量下都比 OpenAI 便宜。按 default 分组，输入与部分模型接近，输出成本取决于候选模型和输入输出比例。本文用面板定价数据计算月成本，并说明缓存、选型与批量处理的省钱边界。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#website",
+      "url": "https://a37836323.github.io/claude-sonnet-5-api",
+      "name": "Claude Sonnet 5 API 中转站 2026：价格、接入与模型参数",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Claude Sonnet 5 API 中转站",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "2026 年 claude-sonnet-5 API 成本怎么和其他模型比较",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "offers": {
+        "@type": "Offer",
+        "price": "输入 $2 / 100 万 token；输出 $10 / 100 万 token（基准价）",
+        "priceCurrency": "USD",
+        "url": "https://api.openlux.ai",
+        "description": "最终计费金额 = 基准价 × 用户所在分组倍率；缓存命中基准价为 $0.2 / 100 万 token。"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/#article",
+      "headline": "2026 年 claude-sonnet-5 API 成本怎么和其他模型比较",
+      "datePublished": "2026-08-04",
+      "dateModified": "2026-08-05",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fefdfb;color:#1c1917;font-family:"Helvetica Neue",Helvetica,"PingFang SC","Source Han Sans SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.shell-frame94{max-width:900px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #d9f99d}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#65a30d;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f7fee7;padding:.15em .4em;border-radius:6px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f7fee7;border:1px solid #d9f99d;border-radius:10px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #d9f99d;padding:10px 12px;text-align:left}
+th{background:#f7fee7;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:disc}
+li{margin:.4em 0}
+.head-col11{background:#f7fee7;border-left:3px solid #65a30d;
+border-radius:0 10px 10px 0;padding:14px 18px;margin:1.4em 0}
+.item-head60{display:inline-block;background:#65a30d;color:#fff;
+padding:12px 26px;border-radius:10px;font-weight:600;margin:.6em 0}
+.item-head60:hover{opacity:.88;text-decoration:none}
+.pane-stack58{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #d9f99d}
+.body-grid55{border:1px solid #d9f99d;border-radius:10px;
+padding:2px 18px;margin:.8em 0}
+.unit-note59{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .shell-frame94{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="shell-frame94">
+<p class="head-deck31"><a href="https://a37836323.github.io/claude-sonnet-5-api/">首页</a> ／ claude-sonnet-5</p>
+<h1>2026 年 claude-sonnet-5 API 成本怎么和其他模型比较</h1>
+<p>claude-sonnet-5 的基准价为输入 $2、输出 $10、缓存命中 $0.2，单位均为美元 / 100 万 token。在 default 分组下乘以 ×0.07353 后，输入约为 $0.14706、输出约为 $0.7353；是否更省钱，取决于输出占比、缓存命中情况，以及实际任务是否能换用更低单价模型。</p>
+<div>
+<h2>claude-sonnet-5 和常见对话模型每百万 token 差多少钱？</h2>
+<p>按面板基准价比较，claude-sonnet-5 的输入价为 $2 / 100 万 token、输出价为 $10 / 100 万 token，不是输入和输出都低于所有候选模型。下表仅用于按 token 预算，不代表模型能力、速度或适用任务相同。</p>
+<p>模型｜输入基准价｜输出基准价（美元 / 100 万 token）
+claude-sonnet-5｜$2｜$10
+gpt-5｜$1.25｜$10
+gpt-4.1｜$2｜$8
+gpt-4o｜$2.5｜$10
+gemini-3-pro-preview｜$2｜$12
+deepseek-v3.2｜$2｜$3
+qwen3.6-plus｜$2｜$12
+claude-haiku-4-5-20251001｜$1｜$5</p>
+<p>以 default 分组的 ×0.07353 计算，claude-sonnet-5 的输入、输出和缓存命中单价分别约为 $0.14706、$0.7353、$0.014706。该分组支持 GPT、Claude 等模型；若账号所在分组不同，所有结论都要按对应倍率重算。数据来自面板定价接口，拉取时间为 2026-08-04T16:16:08Z。</p>
+<h2>每月调用 claude-sonnet-5 大概要花多少钱？</h2>
+<p>假设一个月累计输入 1000 万 token、输出 200 万 token，且全部按 default 分组的非缓存输入计费，claude-sonnet-5 的月成本约为 $2.9412。计算式为：1000 万 ÷ 100 万 × $0.14706，加上 200 万 ÷ 100 万 × $0.7353。</p>
+<p>同一用量下，输入输出比例会改变结论。输出较多时，输出单价的影响更大；例如 gpt-4.1 的输出基准价为 $8，低于 claude-sonnet-5 的 $10。反过来，若工作负载以输入为主，claude-sonnet-5 与 gpt-4.1 的基准输入价同为 $2，而 gpt-4o 为 $2.5。</p>
+<p>若上述 1000 万输入 token 都按 claude-sonnet-5 的缓存命中价计费，仍按 default 分组、输出 200 万 token 计算，成本约为 $1.61766。计算式为：1000 万 ÷ 100 万 × $0.014706，加上 200 万 ÷ 100 万 × $0.7353。实际缓存命中量需以账单或调用记录为准。</p>
+<h2>claude-sonnet-5 会比 OpenAI 模型便宜吗？</h2>
+<p>不能脱离具体模型和输入输出比例回答。与 gpt-4o 相比，claude-sonnet-5 的基准输入价从 $2.5 降至 $2，输出价同为 $10；与 gpt-4.1 相比，输入价同为 $2，但 claude-sonnet-5 的输出价 $10 高于 $8；与 gpt-5 相比，输入价 $2 高于 $1.25，输出价同为 $10。</p>
+<p>因此，“cheaper than OpenAI”应拆成实际 token 构成再计算，而不是只看一列输入价。候选模型的分组倍率也可能不同；比较时应统一使用同一账号可见分组下的最终单价，而非混用基准价与最终价。</p>
+<h2>便宜不等于合适，应该看哪些取舍？</h2>
+<p>claude-sonnet-5 已知的上下文窗口默认值和上限均为 100 万 token，最大输出 token 限制为 128k。对需要长上下文或较长生成结果的任务，这些边界应先纳入评估，而不是只按每百万 token 单价选型。</p>
+<p>本页没有可引用的 claude-sonnet-5 延迟、吞吐、任务成功率或基准测试数据，这些指标均为待实测。能力差异也不能从价格表推出；在切换模型前，应使用自己的提示词、工具调用流程和验收样本做对照，记录输入、输出、重试与人工返工成本。</p>
+<h2>用 claude-sonnet-5 时怎么具体控制 token 成本？</h2>
+<p>第一，优先识别可复用的长前缀。claude-sonnet-5 的缓存命中基准价为 $0.2 / 100 万 token，低于其 $2 的非缓存输入基准价；固定系统提示、重复资料或稳定上下文是否形成缓存命中，需要依据实际调用记录确认。</p>
+<p>第二，按任务拆分选型。对不要求使用 claude-sonnet-5 的步骤，可先按输入输出比例比较候选模型的单价；例如 deepseek-v3.2 的基准价为输入 $2、输出 $3，claude-haiku-4-5-20251001 为输入 $1、输出 $5。是否满足任务质量要求仍需自行验证。</p>
+<p>第三，批量处理先算 token，而不要假定批量天然有折扣。已知定价材料未提供 claude-sonnet-5 的 batch 专属单价或折扣比例，相关数值为待实测。批量任务可先用小样本统计每条任务的输入、输出、缓存命中与失败重试，再据此预估整批成本。</p>
+<h2>claude-sonnet-5 的价格什么时候会变，去哪里核对？</h2>
+<p>价格可能随面板基准价、用户所在分组或分组倍率变化而变化。本页的所有金额以 https://api.openlux.ai/api/pricing 在 2026-08-04T16:16:08Z 返回的数据为依据，不能替代下单前的实时核对。</p>
+<p>核对时先确认模型名为 claude-sonnet-5，再读取输入、输出和缓存命中基准价，最后乘以账号所属分组的倍率。当前材料列出 452 个在售模型，其中仅展示调用量最高的 150 个；未展示的 302 个模型不应据此视为不可用。</p>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://api.openlux.ai/register?channel=c_lkv0gzwj" rel="nofollow noopener" data-cta="link">点此进入</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="wrap-pane27">
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/quickstart/">claude-sonnet-5 API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/compare/">claude-sonnet-5 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/faq/">claude-sonnet-5 API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-buy/">2026 年 Claude Sonnet 5 API 怎么买：下单前要确认的渠道与结算信息</a><span>Claude Sonnet 5 购买指南</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-payments/">没有信用卡，Claude Sonnet 5 API 付款方式怎么确认</a><span>确认 Claude Sonnet 5 付款方式</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/api-relay-explained/">API 中转站到底做了什么，什么时候值得多走这一跳</a><span>了解 API 中转站原理</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-code-relay-setup/">Claude Code 接入 claude-sonnet-5：先确认配置能力，再写中转参数</a><span>Claude Code 中转配置核对</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-api-ban-risk/">claude-sonnet-5 走中转会被封吗，风险该怎么核实</a><span>封号与数据风险判断</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-free-trial/">claude-sonnet-5 API 能免费试用吗：先确认额度，再安排验证</a><span>免费额度与试用边界</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/organization-disabled-error-fix/">Cline 提示 this organization has been disabled 时，先判断是不是账号侧故障</a><span>组织禁用报错排查</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>先在面板确认 claude-sonnet-5 分组与凭据，再用最小请求完成接入验证</p>
+<p><a class="item-head60" href="https://api.openlux.ai/register?channel=c_lkv0gzwj" rel="nofollow noopener" data-cta="button">注册领取额度，开始调用</a></p>
+<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_lkv0gzwj" rel="nofollow noopener" data-cta="link">https://api.openlux.ai</a></p>
+</div>
+<p class="pane-stack58">最后更新：2026年08月05日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='claude-sonnet-5-api',L='zh-CN',V=1;
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
