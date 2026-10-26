@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>claude-sonnet-5 换成 claude-sonnet-5-5 报 400 怎么改：thinking disabled、tool_choice 与 computer 工具</title>
+<meta name="description" content="Anthropic 已把 Claude Sonnet 5 列为旧版模型，并给出迁移到 Claude Sonnet 5.5 的官方指南。按指南，原来在 claude-sonnet-5 上能用的 thinking disabled、tool_choice any/tool、computer_20251124 在 claude-sonnet-5-5 上会返回 400。本文逐条说明原因、改法和验证方法。">
+<meta name="keywords" content="Claude Sonnet 5 API 中转站,Claude Sonnet 5 API,claude-sonnet-5,Claude API 中转,Anthropic API,Claude 模型价格,大模型 API,模型中转站">
+<link rel="canonical" href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-to-5-5-400-error-fix/">
+<link rel="alternate" hreflang="zh-CN" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<link rel="alternate" hreflang="en-US" href="https://claude-sonnet-5-api-en.pages.dev/">
+<link rel="alternate" hreflang="x-default" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="claude-sonnet-5 换成 claude-sonnet-5-5 报 400 怎么改：thinking disabled、tool_choice 与 computer 工具">
+<meta property="og:description" content="Anthropic 已把 Claude Sonnet 5 列为旧版模型，并给出迁移到 Claude Sonnet 5.5 的官方指南。按指南，原来在 claude-sonnet-5 上能用的 thinking disabled、tool_choice any/tool、computer_20251124 在 claude-sonnet-5-5 上会返回 400。本文逐条说明原因、改法和验证方法。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="claude-sonnet-5 换成 claude-sonnet-5-5 报 400 怎么改：thinking disabled、tool_choice 与 computer 工具">
+<meta name="twitter:description" content="Anthropic 已把 Claude Sonnet 5 列为旧版模型，并给出迁移到 Claude Sonnet 5.5 的官方指南。按指南，原来在 claude-sonnet-5 上能用的 thinking disabled、tool_choice any/tool、computer_20251124 在 claude-sonnet-5-5 上会返回 400。本文逐条说明原因、改法和验证方法。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#website",
+      "url": "https://a37836323.github.io/claude-sonnet-5-api",
+      "name": "Claude Sonnet 5 API 中转站 2026：价格、接入与模型参数",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-to-5-5-400-error-fix/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Claude Sonnet 5 API 中转站",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "claude-sonnet-5 升级到 claude-sonnet-5-5 后报 400：先查 thinking、tool_choice 和 computer 工具",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-to-5-5-400-error-fix/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "offers": {
+        "@type": "Offer",
+        "price": "输入 $2 / 100 万 token；输出 $10 / 100 万 token（基准价）",
+        "priceCurrency": "USD",
+        "url": "https://api.openlux.ai",
+        "description": "最终计费金额 = 基准价 × 用户所在分组倍率；缓存命中基准价为 $0.2 / 100 万 token。"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-to-5-5-400-error-fix/#article",
+      "headline": "claude-sonnet-5 升级到 claude-sonnet-5-5 后报 400：先查 thinking、tool_choice 和 computer 工具",
+      "datePublished": "2026-08-04",
+      "dateModified": "2026-10-27",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-to-5-5-400-error-fix/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fefdfb;color:#1c1917;font-family:"Helvetica Neue",Helvetica,"PingFang SC","Source Han Sans SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.shell-frame94{max-width:900px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #d9f99d}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#65a30d;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f7fee7;padding:.15em .4em;border-radius:6px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f7fee7;border:1px solid #d9f99d;border-radius:10px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #d9f99d;padding:10px 12px;text-align:left}
+th{background:#f7fee7;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:disc}
+li{margin:.4em 0}
+.head-col11{background:#f7fee7;border-left:3px solid #65a30d;
+border-radius:0 10px 10px 0;padding:14px 18px;margin:1.4em 0}
+.item-head60{display:inline-block;background:#65a30d;color:#fff;
+padding:12px 26px;border-radius:10px;font-weight:600;margin:.6em 0}
+.item-head60:hover{opacity:.88;text-decoration:none}
+.pane-stack58{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #d9f99d}
+.body-grid55{border:1px solid #d9f99d;border-radius:10px;
+padding:2px 18px;margin:.8em 0}
+.unit-note59{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .shell-frame94{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="shell-frame94">
+<p data-notice="price-20261025" style="margin:0 0 16px;padding:10px 14px;border:1px solid #f0c36d;background:#fff8e6;color:#5c4400;border-radius:6px;font-size:14px;line-height:1.6">本页价格与模型信息可能已有变化，请以官网为准：<a href="https://www.openlux.ai/pricing?utm_source=claude-sonnet-5-api&amp;utm_medium=satellite&amp;utm_campaign=price_notice" style="color:#0b57d0">OpenLux 官网价格页</a></p>
+<p class="head-deck31"><a href="https://a37836323.github.io/claude-sonnet-5-api/">首页</a> ／ claude-sonnet-5</p>
+<h1>claude-sonnet-5 升级到 claude-sonnet-5-5 后报 400：先查 thinking、tool_choice 和 computer 工具</h1>
+<p>把代码里的 claude-sonnet-5 直接换成 claude-sonnet-5-5 后，如果请求一发出就返回 400，先看三处：thinking 是不是写了 disabled，tool_choice 是不是 any 或 tool，计算机使用工具是不是 computer_20251124。Anthropic 官方模型页已把 Claude Sonnet 5 标为旧版（Legacy），并在 Claude Sonnet 5.5 迁移指南里单独列出了从 Claude Sonnet 5 迁移要改的地方。本页按这份指南整理每种 400 的原因、改法和改完后的验证步骤。</p>
+
+<div>
+<h2>为什么 claude-sonnet-5 的请求换成 claude-sonnet-5-5 会报 400？</h2>
+<p>Anthropic 官方 Claude Sonnet 5 模型页写明：Claude Sonnet 5 于 2026 年 6 月 30 日发布，目前状态为旧版但仍可用（Active, legacy），退役时间不早于 2027 年 6 月 30 日，官方建议考虑迁移到 Claude Sonnet 5.5。所以不升级也能继续调用 claude-sonnet-5，升级是可选的，但升级时不能只改模型名。</p>
+<p>Claude Sonnet 5.5 迁移指南列出了五类在 claude-sonnet-5-5 上返回 400 的设置：thinking 预算（budget_tokens）、采样参数（temperature、top_p、top_k）、assistant 预填充、强制工具调用（tool_choice 为 any 或 tool）、thinking 设为 disabled。其中采样参数和预填充在 Claude Sonnet 5 上本来就会返回 400（Sonnet 5 模型页和迁移指南均有说明）；按官方模型总览，budget_tokens 这种手动思考模式在 4.6 之后的模型上也不再接受。因此，原来在 claude-sonnet-5 上能正常运行的代码，升级时需要新改的主要是 thinking disabled 和强制 tool_choice 这两类。</p>
+<p>另外两处也会报 400：在 Claude API 上用 computer_20251124 版本的计算机使用工具，以及在 advisor 工具里把 Claude Sonnet 5 当作顾问模型。下面逐条说明。</p>
+<p>官方资料：Claude Sonnet 5 模型页 https://platform.claude.com/docs/en/models/sonnet-5/overview ，Claude Sonnet 5.5 迁移指南 https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide 。</p>
+<h2>thinking 写了 disabled 报 400：改成 between_tools</h2>
+<p>Claude Sonnet 5 关闭思考的写法是 thinking: {&quot;type&quot;: &quot;disabled&quot;}。迁移指南说明，Claude Sonnet 5.5 只接受 adaptive 和 between_tools 两种 thinking 类型，发送 disabled 会返回 400 invalid_request_error，报错信息会提示改用 {&quot;type&quot;: &quot;between_tools&quot;}。</p>
+<p>between_tools 是 Claude Sonnet 5.5 上最低的思考设置：模型回答前不先思考，但在多次工具调用之间写的简短进度说明会以 thinking 块返回；不带工具时，响应里只有文本。</p>
+<p>改成 between_tools 时有三点限制，都会返回 400：一是 effort 只能是 low、medium 或 high，用 xhigh 或 max 会报错，要用这两档就去掉 thinking 字段或写 {&quot;type&quot;: &quot;adaptive&quot;}；二是 between_tools 不能再带 display、budget_tokens 或 block_binding 等其他字段；三是用 between_tools 时，单条消息里的 output_config.effort 如果和当前生效的档位不同会报错，想每轮调整 effort 要用 adaptive。</p>
+<p>官方给出的改写示例：原来 claude-sonnet-5 的请求写 thinking disabled 加 effort xhigh，改到 claude-sonnet-5-5 时写 thinking between_tools 加 output_config 里的 effort high。</p>
+<h2>tool_choice 是 any 或 tool 报 400：改成 auto 加 strict 工具</h2>
+<p>迁移指南写明，迁移页列出的更早模型都接受 tool_choice 为 any 或 tool，但 Claude Sonnet 5.5 对这两种都返回 400，token 计数接口也一样。报错信息是：tool_choice: type &quot;tool&quot; and &quot;any&quot; are not supported for this model.</p>
+<p>官方给的改法：把 tool_choice 改成 {&quot;type&quot;: &quot;auto&quot;}，并在需要的工具定义里加 strict: true，让工具入参符合 input_schema。改成 auto 后模型可以不调用工具直接回答，所以要在提示词里写清什么时候必须用这个工具，官方示例就是在用户消息里加上「Use the get_weather tool」。</p>
+<p>使用 strict 工具时注意：严格模式只支持 JSON Schema 的一部分，每个 object 都要写 additionalProperties: false；一个请求最多 20 个 strict 工具；MCP、计算机使用和浏览器使用这几类工具集条目不接受 strict。工具多的时候只给真正需要的工具加 strict。</p>
+<p>官方资料：strict 工具说明 https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use 。</p>
+<h2>计算机使用和 advisor 工具报 400 怎么改？</h2>
+<p>计算机使用：迁移指南说明，在 Claude API 和 Claude Models on Google Cloud（Google 托管）上，Claude Sonnet 5.5 只能通过 computer_toolset_20260801 工具集使用计算机，Claude Sonnet 5 常用的 computer_20251124 在这两个平台会返回 400；Amazon Bedrock 上仍然发送 computer_20251124。computer_20250124 在任何平台都不被 Claude Sonnet 5.5 接受。</p>
+<p>如果原来的请求带了 fine-grained-tool-streaming-2025-05-14 这个 beta 请求头，换成工具集时要去掉它，它和工具集条目同时出现会返回 400；需要流式工具入参的工具改为单独设置 eager_input_streaming: true。</p>
+<p>advisor 工具：以 Claude Sonnet 5.5 作为执行模型时，顾问模型只能是 Claude Opus 5、Claude Opus 5.5、Claude Sonnet 5.5、Claude Fable 5、Claude Fable 5.1、Claude Mythos 5 或 Claude Mythos 5.1。原来用 Claude Sonnet 5 当顾问的配置会返回 400。另外，Claude Sonnet 5.5 收到的顾问建议是加密的 advisor_redacted_result 块，响应里读不到建议原文。</p>
+<h2>不报错但结果变了：升级后还要检查的地方</h2>
+<p>对话只追加、不改写：迁移指南说明，Claude Sonnet 5.5 的每个 thinking 块都对它之前的对话做了签名；对 2026 年 8 月 31 日 00:00 UTC 及之后创建的账户，修改了前面的历史后再回传这些 thinking 块会返回 400。要改指令或工具，官方建议用对话中途的 system 消息。thinking 块还要原样回传，包括空的块。</p>
+<p>工具调用之间的文字变成 thinking 块：Claude Sonnet 5 在工具调用之间写的文字都以 text 块返回；Claude Sonnet 5.5 上超过一两句的说明会以 thinking 块返回，默认 display 下内容为空。请求不会失败，但界面上原来显示的进度说明可能就没了。需要显示的话，adaptive 模式下可把 display 设为 summarized，或使用 beta 的 updates。</p>
+<p>拒答类别更多：Claude Sonnet 5.5 拒答的类别比 Claude Sonnet 5 多，拒答时 stop_reason 为 refusal，stop_details 可能给出 cyber、bio、frontier_llm、reasoning_extraction、general_harms 等类别，代码里要处理这种结束原因。</p>
+<p>其他变化：提示缓存的最小长度从 Claude Sonnet 5 的 1024 token 降到 512 token；effort 有 low、medium、high、xhigh、max 五档，API 默认 high，但各档位重新校准过，同一档位的思考量和 Claude Sonnet 5 不同，官方建议重新测一遍 effort 并重新评估成本。两个模型的价格差异以官网价格页为准。</p>
+<h2>改完后怎么验证？</h2>
+<p>第一步，发一个最小请求：model 写 claude-sonnet-5-5，带 max_tokens 和 output_config.effort，不写 temperature、top_p、top_k，不写预填充，不写 thinking disabled。返回 200 即说明模型名和基础参数没问题。读取结果时按 content 里每个块的 type 取 text，不要直接读 content[0].text，因为响应可能以 thinking 块开头。</p>
+<p>第二步，逐个放回业务里用到的设置：需要关闭前置思考的加 between_tools，需要调工具的用 tool_choice auto 加 strict 工具，用计算机使用的换成 computer_toolset_20260801。每加一项都确认仍返回 200，并检查工具调用的入参是否符合 schema。</p>
+<p>第三步，如果还返回 400，直接看响应体里的错误信息，对照本页各节：提到 between_tools 的是 thinking 设置问题，提到 tool_choice 的是强制工具调用问题，请求里有计算机使用工具或 fine-grained-tool-streaming 请求头的，对照计算机使用一节检查工具版本。官方迁移指南还提供了 Claude Code 自带的 Claude API 技能，可以用 /claude-api migrate this project to claude-sonnet-5-5 让它批量改代码，改完后再按清单人工核对。</p>
+<p>通过中转调用时：本平台价格接口显示 claude-sonnet-5 和 claude-sonnet-5-5 都在售，端点类型包含 anthropic 和 openai。以上参数都按 Anthropic Messages 协议的写法说明，thinking、tool_choice、output_config 等字段在中转链路上是否原样转发，以实际返回为准；改完先用小请求确认，再切换正式流量。</p>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://api.openlux.ai/register?channel=c_uddeqt3y" rel="nofollow noopener" data-cta="docs">点此进入</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="wrap-pane27">
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/quickstart/">claude-sonnet-5 API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/compare/">claude-sonnet-5 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/faq/">claude-sonnet-5 API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-buy/">2026 年 Claude Sonnet 5 API 怎么买：下单前要确认的渠道与结算信息</a><span>Claude Sonnet 5 购买指南</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-payments/">没有信用卡，Claude Sonnet 5 API 付款方式怎么确认</a><span>确认 Claude Sonnet 5 付款方式</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/api-relay-explained/">API 中转站到底做了什么，什么时候值得多走这一跳</a><span>了解 API 中转站原理</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-code-relay-setup/">Claude Code 接入 claude-sonnet-5：先确认配置能力，再写中转参数</a><span>Claude Code 中转配置核对</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/">2026 年 claude-sonnet-5 API 成本怎么和其他模型比较</a><span>Sonnet 5 成本对比</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-api-ban-risk/">claude-sonnet-5 走中转会被封吗，风险该怎么核实</a><span>封号与数据风险判断</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-free-trial/">claude-sonnet-5 API 能免费试用吗：先确认额度，再安排验证</a><span>免费额度与试用边界</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/organization-disabled-error-fix/">Cline 提示 this organization has been disabled 时，先判断是不是账号侧故障</a><span>组织禁用报错排查</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>先在面板确认 claude-sonnet-5 分组与凭据，再用最小请求完成接入验证</p>
+<p><a class="item-head60" href="https://api.openlux.ai/register?channel=c_uddeqt3y" rel="nofollow noopener" data-cta="register-bottom">注册账号，配置 API Key</a></p>
+<p>账号入口：<a href="https://api.openlux.ai/register?channel=c_uddeqt3y" rel="nofollow noopener" data-cta="link">https://api.openlux.ai</a></p>
+</div>
+<p class="pane-stack58">最后更新：2026年10月27日　|　本页由 OpenLux 编写并维护。<br>价格资料以文中标注的数据来源和查询日期为准；未完成的性能测试不作为承诺。实际可用性与计费以控制台为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='claude-sonnet-5-api',L='zh-CN',V=1;
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
