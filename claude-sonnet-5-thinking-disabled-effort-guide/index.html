@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>claude-sonnet-5 思考怎么关、effort 怎么设：默认开启思考、budget_tokens 报 400 与回答被截断</title>
+<meta name="description" content="claude-sonnet-5 不写 thinking 时默认开启自适应思考，budget_tokens 和 between_tools 会报 400。按 Anthropic 官方文档说明关闭思考的写法、effort 五档怎么选、max_tokens 为什么要留足。">
+<meta name="keywords" content="Claude Sonnet 5 API 中转站,Claude Sonnet 5 API,claude-sonnet-5,Claude API 中转,Anthropic API,Claude 模型价格,大模型 API,模型中转站">
+<link rel="canonical" href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-thinking-disabled-effort-guide/">
+<link rel="alternate" hreflang="zh-CN" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<link rel="alternate" hreflang="en-US" href="https://claude-sonnet-5-api-en.pages.dev/">
+<link rel="alternate" hreflang="x-default" href="https://a37836323.github.io/claude-sonnet-5-api/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="claude-sonnet-5 思考怎么关、effort 怎么设：默认开启思考、budget_tokens 报 400 与回答被截断">
+<meta property="og:description" content="claude-sonnet-5 不写 thinking 时默认开启自适应思考，budget_tokens 和 between_tools 会报 400。按 Anthropic 官方文档说明关闭思考的写法、effort 五档怎么选、max_tokens 为什么要留足。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="claude-sonnet-5 思考怎么关、effort 怎么设：默认开启思考、budget_tokens 报 400 与回答被截断">
+<meta name="twitter:description" content="claude-sonnet-5 不写 thinking 时默认开启自适应思考，budget_tokens 和 between_tools 会报 400。按 Anthropic 官方文档说明关闭思考的写法、effort 五档怎么选、max_tokens 为什么要留足。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#website",
+      "url": "https://a37836323.github.io/claude-sonnet-5-api",
+      "name": "Claude Sonnet 5 API 中转站 2026：价格、接入与模型参数",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-thinking-disabled-effort-guide/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Claude Sonnet 5 API 中转站",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "claude-sonnet-5 的思考与 effort 设置：关闭写法、400 报错与 max_tokens",
+          "item": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-thinking-disabled-effort-guide/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "Claude Sonnet 5 API 中转站 2026 接入说明：claude-sonnet-5 基准输入价 $2、输出价 $10 / 100 万 token，最终按用户分组倍率结算。",
+      "offers": {
+        "@type": "Offer",
+        "price": "输入 $2 / 100 万 token；输出 $10 / 100 万 token（基准价）",
+        "priceCurrency": "USD",
+        "url": "https://api.openlux.ai",
+        "description": "最终计费金额 = 基准价 × 用户所在分组倍率；缓存命中基准价为 $0.2 / 100 万 token。"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-thinking-disabled-effort-guide/#article",
+      "headline": "claude-sonnet-5 的思考与 effort 设置：关闭写法、400 报错与 max_tokens",
+      "datePublished": "2026-08-04",
+      "dateModified": "2026-10-30",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-thinking-disabled-effort-guide/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fefdfb;color:#1c1917;font-family:"Helvetica Neue",Helvetica,"PingFang SC","Source Han Sans SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.shell-frame94{max-width:900px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #d9f99d}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#65a30d;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f7fee7;padding:.15em .4em;border-radius:6px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f7fee7;border:1px solid #d9f99d;border-radius:10px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #d9f99d;padding:10px 12px;text-align:left}
+th{background:#f7fee7;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:disc}
+li{margin:.4em 0}
+.head-col11{background:#f7fee7;border-left:3px solid #65a30d;
+border-radius:0 10px 10px 0;padding:14px 18px;margin:1.4em 0}
+.item-head60{display:inline-block;background:#65a30d;color:#fff;
+padding:12px 26px;border-radius:10px;font-weight:600;margin:.6em 0}
+.item-head60:hover{opacity:.88;text-decoration:none}
+.pane-stack58{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #d9f99d}
+.body-grid55{border:1px solid #d9f99d;border-radius:10px;
+padding:2px 18px;margin:.8em 0}
+.unit-note59{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .shell-frame94{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="shell-frame94">
+<p data-notice="price-20261025" style="margin:0 0 16px;padding:10px 14px;border:1px solid #f0c36d;background:#fff8e6;color:#5c4400;border-radius:6px;font-size:14px;line-height:1.6">本页价格与模型信息可能已有变化，请以官网为准：<a href="https://www.openlux.ai/pricing?utm_source=claude-sonnet-5-api&amp;utm_medium=satellite&amp;utm_campaign=price_notice" style="color:#0b57d0">OpenLux 官网价格页</a></p>
+<p class="head-deck31"><a href="https://a37836323.github.io/claude-sonnet-5-api/">首页</a> ／ claude-sonnet-5</p>
+<h1>claude-sonnet-5 的思考与 effort 设置：关闭写法、400 报错与 max_tokens</h1>
+<p>Claude Sonnet 5（模型 ID claude-sonnet-5）和 Claude Sonnet 4.6 有一个容易忽略的差别：请求里不写 thinking 字段时，它默认就开启自适应思考，而同样的请求在 Sonnet 4.6 上是不思考的。从旧模型迁过来的代码因此常遇到三类问题：沿用 budget_tokens 的请求返回 400；思考占掉 max_tokens，回答被截断；响应开头多出内容为空的 thinking 块。本页只依据 Anthropic 官方的思考文档、思考故障排查页、Effort 文档和 Sonnet 5 提示指南，说明各种 thinking 写法在 claude-sonnet-5 上的结果、怎样关闭思考、effort 怎么选和 max_tokens 怎么留。从 claude-sonnet-5 换到 claude-sonnet-5-5 后报 400 的情况，请看本站的 400 报错修复页。</p>
+
+<div>
+<h2>先确认：不写 thinking 时 claude-sonnet-5 默认就在思考</h2>
+<p>Anthropic 的 Sonnet 5 提示指南写明：在 Claude Sonnet 5 上自适应思考默认开启，不带 thinking 字段的请求按自适应思考运行，这和 Claude Sonnet 4.6 不同，同样的请求在 Sonnet 4.6 上不思考。2026 年 6 月 30 日的官方发布说明也把它列为迁移到 Claude Sonnet 5 时的三项行为变化之一，另外两项是手动扩展思考（budget_tokens）被移除、设置采样参数会返回 400。</p>
+<p>思考开启后，响应的 content 里可能先出现 thinking 块，再出现 text 块。官方文档说明，Claude Sonnet 5 上 display 的默认值是 omitted，thinking 块里的 thinking 字段是空字符串，只有 signature 字段有内容。这是正常情况，不是请求出错；读取回答时要按块的 type 取 text 块，不要直接读 content[0].text。</p>
+<p>官方故障排查页还说明，自适应模式下模型判断问题足够简单时会跳过思考，所以有的轮次没有 thinking 块也属正常。想让它更常思考或想得更深，先调高 effort。</p>
+<p>如果需要看到思考摘要，可以写 thinking: {&quot;type&quot;: &quot;adaptive&quot;, &quot;display&quot;: &quot;summarized&quot;}。官方说明这里返回的是思考过程的摘要，不是原始思维链；无论 display 怎么设，thinking 块的计费方式相同。</p>
+<h2>thinking 各种写法在 claude-sonnet-5 上会怎样</h2>
+<p>官方思考文档按模型列出了每种 thinking 值的结果。Claude Sonnet 5 这一行是：不写 thinking 字段，按自适应思考运行；写 {&quot;type&quot;: &quot;adaptive&quot;}，同样是自适应思考；写 {&quot;type&quot;: &quot;enabled&quot;} 加 budget_tokens，返回 400；写 {&quot;type&quot;: &quot;between_tools&quot;}，返回 400；写 {&quot;type&quot;: &quot;disabled&quot;}，关闭思考。</p>
+<p>budget_tokens 报 400 时，官方给出的报错原文是：&quot;thinking.type.enabled&quot; is not supported for this model. Use &quot;thinking.type.adaptive&quot; and &quot;output_config.effort&quot; to control thinking behavior. 原因是手动扩展思考在 Sonnet 4.6 上已被标为弃用，在 Claude Sonnet 5 上被移除。改法是把 thinking 改成 {&quot;type&quot;: &quot;adaptive&quot;} 或直接删掉 thinking 字段，用 output_config.effort 控制思考深度，不再写 budget_tokens。</p>
+<p>between_tools 报 400 时，报错原文是：&quot;thinking.type.between_tools&quot; is not supported for this model. 官方说明只有 Claude Sonnet 5.5 接受 between_tools，它在 Sonnet 5.5 上用来代替 disabled。如果代码同时给 Sonnet 5 和 Sonnet 5.5 发请求，要按模型分别写：Sonnet 5 关闭思考用 disabled，Sonnet 5.5 用 between_tools。</p>
+<p>不想在代码里写死这张表，可以先查 Models API。官方 2026 年 10 月 5 日的发布说明写明，Models API 新增了 capabilities.thinking.types.disabled，10 月 15 日又新增了 capabilities.thinking.types.between_tools，分别表示模型是否接受这两种写法。发请求前读取 capabilities.thinking.types.disabled.supported 和 capabilities.thinking.types.between_tools.supported 即可判断。</p>
+<h2>要关掉思考怎么写，关之前先想清楚</h2>
+<p>关闭写法是在请求里加 thinking: {&quot;type&quot;: &quot;disabled&quot;}。注意不要和 display 一起写，官方说明 display 不能与 disabled 同时使用，因为关闭后没有思考内容可以显示。</p>
+<p>关闭前先确认目的。如果只是不想让思考文字出现在响应里，什么都不用改：Claude Sonnet 5 默认 display 为 omitted，思考文字本来就不返回。如果是嫌思考太频繁、延迟太高，官方提示指南的建议是：原来在 Sonnet 4.6 上不开思考的业务，到 Claude Sonnet 5 上先试试保留思考、调低 effort。</p>
+<p>官方提示指南还提到两点。第一，大型或复杂的系统提示可能让模型更频繁地思考，可以在提示词里加引导，官方示例的意思是：思考会增加延迟，只在多步推理等能明显提高回答质量的问题上使用，拿不准时直接回答；改完要测量对效果的影响。第二，关闭思考后，模型更不容易主动调用工具或考虑搜索，如果业务依赖关闭思考时的工具调用，要在系统提示里明确写出什么情况下使用哪个工具。</p>
+<p>官方表格里，Claude Opus 5 和 Claude Haiku 5.5 的 disabled 只在 effort 为 high 及以下时接受，Claude Sonnet 5 这一行没有这条标注。如果关闭思考后仍收到 400，以响应体里的报错信息为准逐项核对。</p>
+<h2>effort 五档怎么选</h2>
+<p>effort 写在请求的 output_config.effort 里，可选 low、medium、high、xhigh、max 五档。Claude Sonnet 5 在 Claude API 和 Claude Code 上默认 high；官方说明把 effort 显式设成默认值，与不传这个参数的行为完全相同。adaptive 是思考模式，不是 effort 档位，不要把 adaptive 填进 effort。</p>
+<p>官方对各档的建议：max 是不限 token 花费的最高能力；xhigh 适合最难的编码和智能体任务；high 是默认值，适合大多数用途；medium 适合需要降低 token 用量、可以接受一定能力损失的成本敏感场景；low 留给范围明确的短任务和对延迟敏感、对智能要求不高的场景。</p>
+<p>从 Sonnet 4.6 迁移时，官方给了一个粗略对应：Claude Sonnet 5 的 medium 在智能上约等于 Sonnet 4.6 的 high，Sonnet 5 的 high 约等于 Sonnet 4.6 的 max；做评测时要按实际观察到的思考长度对齐，而不是按档位名称对齐。</p>
+<p>官方还说明 Claude Sonnet 5 严格遵守 effort，尤其在低档：low 和 medium 下它只做被要求的事，中等复杂的任务在 low 下有思考不足的风险。遇到复杂问题推理太浅，官方建议先把 effort 调到 high 或 xhigh，而不是靠提示词绕；必须保持 low 时，可以在提示词里加一句提示，说明这个任务需要多步推理、要先仔细思考再回答。</p>
+<h2>max_tokens 要留足：回答只剩一半、stop_reason 是 max_tokens</h2>
+<p>官方说明 max_tokens 是总输出的硬上限，思考和回答文字都算在里面，即使思考文字没有返回也照样占用。思考较长时，可能出现响应几乎全是思考、回答被截断、stop_reason 为 max_tokens 的情况。</p>
+<p>官方提示指南特别提醒两点：一是在 Sonnet 4.6 上不开思考的业务，迁到 Claude Sonnet 5 后要重新检查 max_tokens；二是 Claude Sonnet 5 使用新的分词器，同样的文本大约多出 30% 的 token，具体增幅取决于内容，所以按 Sonnet 4.6 调好的 max_tokens 可能截断同样长度的输出。</p>
+<p>解决办法是调高 max_tokens，或把 effort 降到 medium。在 high、xhigh、max 档运行时，官方建议给 max_tokens 留出思考和工具调用的余量。Claude Sonnet 5 同步 Messages API 的最大输出是 128K token；在 Message Batches API 上带 output-300k-2026-03-24 beta 请求头时可到 300K。</p>
+<p>排查时先看响应的 stop_reason：是 max_tokens 就说明额度被用完，调高 max_tokens 后重试；是 end_turn 但回答比预期短，官方提示指南说明 Claude Sonnet 5 会按任务复杂度调整回答长度，需要更详细的回答时在提示词里写明。</p>
+<h2>temperature、top_p、top_k 也会报 400</h2>
+<p>Claude Sonnet 5 模型页写明，设置 temperature、top_p 或 top_k 会返回 400；6 月 30 日发布说明的表述是把这些采样参数设为非默认值时返回 400。官方提示指南说明这是 Sonnet 系列新增的限制，迁移时应删除这些参数。</p>
+<p>claude-sonnet-5 的请求返回 400 时，先检查实际发出的请求体里有没有这三个字段，包括所用框架或客户端的设置里是否还留着温度等采样参数。</p>
+<p>原来靠 temperature 控制风格多样性的，官方建议改用系统提示词说明语气和变化要求；需要每次产生明显不同的方案时，官方的做法是先让模型列出几种不同方向，由用户选定一种再实现。</p>
+<h2>多轮对话里：改 effort 会让缓存失效，思考块要原样回传</h2>
+<p>官方 Effort 文档说明，对话中途按消息切换 effort 的 beta 功能只支持 Claude Fable 5.1、Claude Mythos 5.1、Claude Opus 5.5、Claude Opus 5、Claude Sonnet 5.5 和 Claude Haiku 5.5，不包括 Claude Sonnet 5。在 Claude Sonnet 5 上换档只能在下一次请求里改顶层的 output_config.effort，提示缓存会从头开始。</p>
+<p>官方故障排查页还说明，思考设置和 effort 档位都属于缓存前缀的一部分，切换思考模式、改 effort 都会让缓存断点失效，表现为 cache_read_input_tokens 降到 0。同一段对话里应保持思考设置和 effort 不变；把参数显式写成默认值与不写等价，不会让缓存失效。</p>
+<p>带工具的多轮对话要把上一轮 assistant 消息原样回传，包括 thinking 和 redacted_thinking 块，即使 thinking 字段是空的。如果代码按类型过滤内容块、丢掉了 redacted_thinking，或者重新拼装了 assistant 消息，会收到 400，报错信息包含：`thinking` or `redacted_thinking` blocks in the latest assistant message cannot be modified。改法是不做过滤，直接回传 API 返回的内容。</p>
+<h2>通过中转调用时的验证方法</h2>
+<p>本页的参数名、默认值和报错原文来自 Anthropic 官方文档，按 Anthropic Messages 协议的写法说明。本平台价格接口显示 claude-sonnet-5 在售，端点类型包含 anthropic 和 openai；请求地址、认证方式以平台接口文档为准。中转层是否原样转发 thinking、output_config 等字段，官方文档没有说明，需要自己用小请求确认。</p>
+<p>建议按这个顺序验证。第一，不写 thinking、不写 temperature，发一个带 max_tokens 的最小请求，确认返回 200，并按块类型取到 text 块。第二，加上 thinking: {&quot;type&quot;: &quot;disabled&quot;} 再发一次，确认返回 200 且响应里没有 thinking 块；再改成 {&quot;type&quot;: &quot;adaptive&quot;, &quot;display&quot;: &quot;summarized&quot;}，在需要推理的问题上应能看到带摘要文字的 thinking 块（简单问题可能直接跳过思考）。第三，用同一个提示分别以 low、medium、high 各发一次，比较响应 usage 里的输出 token 数和耗时，几档之间几乎没有差别时，再确认 effort 字段是否传到了上游。</p>
+<p>最后在自己的长任务上检查 stop_reason 不是 max_tokens。选定档位和思考设置后在代码里显式写出来，避免以后默认值变化带来意外。费用以官网价格页为准。</p>
+<h2>参考资料</h2>
+<p>思考说明 Thinking（Anthropic 官方）：https://platform.claude.com/docs/en/build-with-claude/thinking</p>
+<p>思考故障排查 Troubleshooting thinking（Anthropic 官方）：https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting</p>
+<p>Effort 参数说明（Anthropic 官方）：https://platform.claude.com/docs/en/build-with-claude/effort</p>
+<p>Prompting Claude Sonnet 5 提示指南（Anthropic 官方）：https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5</p>
+<p>Claude Sonnet 5 模型概览（Anthropic 官方）：https://platform.claude.com/docs/en/models/sonnet-5/overview</p>
+<p>Claude 平台发布说明（Anthropic 官方）：https://platform.claude.com/docs/en/release-notes/overview</p>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://api.openlux.ai/register?channel=c_uddeqt3y" rel="nofollow noopener" data-cta="docs">点此进入</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="wrap-pane27">
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/quickstart/">claude-sonnet-5 API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/compare/">claude-sonnet-5 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/faq/">claude-sonnet-5 API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-buy/">2026 年 Claude Sonnet 5 API 怎么买：下单前要确认的渠道与结算信息</a><span>Claude Sonnet 5 购买指南</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-payments/">没有信用卡，Claude Sonnet 5 API 付款方式怎么确认</a><span>确认 Claude Sonnet 5 付款方式</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/api-relay-explained/">API 中转站到底做了什么，什么时候值得多走这一跳</a><span>了解 API 中转站原理</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-code-relay-setup/">Claude Code 接入 claude-sonnet-5：先确认配置能力，再写中转参数</a><span>Claude Code 中转配置核对</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/sonnet-5-cost-comparison/">2026 年 claude-sonnet-5 API 成本怎么和其他模型比较</a><span>Sonnet 5 成本对比</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-api-ban-risk/">claude-sonnet-5 走中转会被封吗，风险该怎么核实</a><span>封号与数据风险判断</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-free-trial/">claude-sonnet-5 API 能免费试用吗：先确认额度，再安排验证</a><span>免费额度与试用边界</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/organization-disabled-error-fix/">Cline 提示 this organization has been disabled 时，先判断是不是账号侧故障</a><span>组织禁用报错排查</span></li>
+<li><a href="https://a37836323.github.io/claude-sonnet-5-api/claude-sonnet-5-to-5-5-400-error-fix/">claude-sonnet-5 升级到 claude-sonnet-5-5 后报 400：先查 thinking、tool_choice 和 computer 工具</a><span>Sonnet 5 升级 5.5 报 400</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>先在面板确认 claude-sonnet-5 分组与凭据，再用最小请求完成接入验证</p>
+<p><a class="item-head60" href="https://api.openlux.ai/register?channel=c_uddeqt3y" rel="nofollow noopener" data-cta="register-bottom">注册账号，配置 API Key</a></p>
+<p>账号入口：<a href="https://api.openlux.ai/register?channel=c_uddeqt3y" rel="nofollow noopener" data-cta="link">https://api.openlux.ai</a></p>
+</div>
+<p class="pane-stack58">最后更新：2026年10月30日　|　本页由 OpenLux 编写并维护。<br>价格资料以文中标注的数据来源和查询日期为准；未完成的性能测试不作为承诺。实际可用性与计费以控制台为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='claude-sonnet-5-api',L='zh-CN',V=1;
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
